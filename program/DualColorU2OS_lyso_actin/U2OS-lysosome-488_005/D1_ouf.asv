@@ -1,0 +1,39 @@
+clear all; clc;close all,
+%% INPUT
+% disk of data storage
+disk = 'G';
+%% READ PARAMETERS
+% sample dir
+[~, smpl_dir, ~] = fileparts(pwd);
+% data dir
+data_dir = [disk, ':\实验数据\Yeast_GFP\', smpl_dir, '\'];
+li_dir=[data_dir,'3_LI\'];
+load([li_dir, 'ac_img.mat'])
+load([li_dir, 'dc_img.mat'])
+avg_img=imread([li_dir,'P-10_ave_img.tif']);
+ouf = 2*ac_img./(ac_img+max(dc_img-148,ac_img));%%%%%% 算背景平均值
+figure,
+imshow(avg_img,[]);
+figure,
+imshow(ac_img,[]);
+figure,
+imshow(ouf,[]);
+% ac_img=ac_img(360:730,230:600);
+% ouf=ouf(360:730,230:600);
+% figure,
+% imshow(ac_img,[]);
+% figure,
+% imshow(ouf,[]);
+ac_img=ac_img/max(ac_img(:));
+ac_maskvalue=graythresh(ac_img)
+ac_mask=im2bw(ac_img,3*ac_maskvalue);
+figure,
+imshow(ac_mask,[]);
+oufvalue=ouf(ac_mask);
+meanouf=mean(oufvalue)
+std_ouf=std(oufvalue)
+save([li_dir,'ouf_mask'],'ac_mask')
+save([li_dir,'ouf-background.mat'],'ouf')
+save([li_dir,'oufvalue_002.mat'], 'oufvalue')
+save([li_dirmeanouf,std_ouf],'[meanouf,std_ouf]')
+save('oufvalue_002.mat', 'oufvalue')

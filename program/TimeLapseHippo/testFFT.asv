@@ -1,0 +1,15 @@
+ang1 = 0 : pi/16: 0.99*pi;
+ang2 = ang1 - pi/3;
+val1 = cos(ang1).^2;
+val2 = cos(ang2).^2;
+figure(1)
+hold off
+plot(val1, 'r')
+hold on
+plot(val2, 'b')
+%
+val_tf = fft(val2);
+li_ft = zeros(1, 16);
+li_ft(1) = img_ft(val_ft(1));
+li_ft(2) = img_ft(2)*exp(1i*abs_ang/180*pi);
+li_ft(:,:,16) = img_ft(:,:,size(img_proc,3)+1-li_periods)*exp(-1i*abs_ang/180*pi);
